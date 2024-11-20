@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import TaskForm from '../TaskForm/TaskForm';
 import Task from '../Task/Task';
 
-function TaskList({ tasks, toggleTaskCompletion }) {
+function TaskList() {
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (text) => {
+    const newTask = { id: Date.now(), text, done: false };
+    setTasks([...tasks, newTask]);
+  };
+
+  const toggleTaskCompletion = (id) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, done: !task.done } : task
+      )
+    );
+  };
+
   return (
-    <ul>
-      {tasks.map((task) => (
-        <Task
-          key={task.id}
-          task={task}
-          toggleTaskCompletion={toggleTaskCompletion}
-        />
+    <div>
+      <TaskForm addTask={addTask} />
+      {tasks.map(task => (
+        <Task key={task.id} task={task} toggleTaskCompletion={toggleTaskCompletion} />
       ))}
-    </ul>
+    </div>
   );
 }
 
