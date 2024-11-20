@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import TaskEditor from '../TaskEditor/TaskEditor';
 
-function Task({ task, toggleTaskCompletion, editTask, deleteTask  }) {
+function Task({ task, toggleTaskCompletion, onDelete, editTask }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => setIsEditing(true);
   const handleCancel = () => setIsEditing(false);
   const handleSave = (newText) => {
-    editTask(task.id, newText);
+    editTask(task.id, newText);  // Вызов editTask
     setIsEditing(false);
   };
 
@@ -21,7 +21,7 @@ function Task({ task, toggleTaskCompletion, editTask, deleteTask  }) {
             {task.text} {task.done ? '(Completed)' : '(Pending)'}
           </span>
           <button onClick={handleEditClick}>Edit</button>
-          <button onClick={() => deleteTask(task.id)}>Delete</button>
+          <button onClick={onDelete}>Delete</button>
         </>
       )}
     </div>
