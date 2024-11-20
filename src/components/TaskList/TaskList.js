@@ -18,11 +18,24 @@ function TaskList() {
     );
   };
 
+  const editTask = (id, newText) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, text: newText } : task
+      )
+    );
+  };
+
   return (
     <div>
       <TaskForm addTask={addTask} />
       {tasks.map(task => (
-        <Task key={task.id} task={task} toggleTaskCompletion={toggleTaskCompletion} />
+        <Task
+          key={task.id}
+          task={task}
+          toggleTaskCompletion={toggleTaskCompletion}
+          editTask={editTask}
+        />
       ))}
     </div>
   );
