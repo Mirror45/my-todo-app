@@ -26,6 +26,10 @@ function TaskList() {
     );
   };
 
+  const deleteTask = (id) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  };
+
   return (
     <div>
       <TaskForm addTask={addTask} />
@@ -35,6 +39,7 @@ function TaskList() {
           task={task}
           toggleTaskCompletion={toggleTaskCompletion}
           editTask={editTask}
+          deleteTask={deleteTask}
         />
       ))}
     </div>
