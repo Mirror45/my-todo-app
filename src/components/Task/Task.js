@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TaskEditor from '../TaskEditor/TaskEditor';
+import styles from './Task.module.css';
 
 function Task({ task, toggleTaskCompletion, onDelete, editTask }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -12,16 +13,23 @@ function Task({ task, toggleTaskCompletion, onDelete, editTask }) {
   };
 
   return (
-    <div>
+    <div className={styles.card}>
       {isEditing ? (
         <TaskEditor task={task} onSave={handleSave} onCancel={handleCancel} />
       ) : (
         <>
-          <span onClick={() => toggleTaskCompletion(task.id)} style={{ cursor: 'pointer' }}>
-            {task.text} {task.done ? '(Completed)' : '(Pending)'}
-          </span>
-          <button onClick={handleEditClick}>Edit</button>
-          <button onClick={onDelete}>Delete</button>
+          <div className={styles.cardContent}> 
+            <span 
+              className={`${styles.taskText} ${task.done ? 'completed' : ''}`}
+              onClick={() => toggleTaskCompletion(task.id)}
+            >
+              {task.text}
+            </span>
+            <div className={styles.cardActions}>
+              <button onClick={handleEditClick}>Edit</button>
+              <button onClick={onDelete}>Delete</button>
+            </div>
+          </div>
         </>
       )}
     </div>

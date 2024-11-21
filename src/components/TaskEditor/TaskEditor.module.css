@@ -1,0 +1,56 @@
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  background-color: #f7f9fa;
+  padding: 15px;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+  
+.editorInput {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.editorInput:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 4px rgba(52, 152, 219, 0.4);
+}
+
+.editorButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.editorButtons button {
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.editorButtons button:hover {
+  filter: brightness(0.9);
+}
+
+.editorButtons button:nth-child(1) {
+  background-color: #27ae60;
+  color: white;
+}
+
+.editorButtons button:nth-child(2) {
+  background-color: #e74c3c;
+  color: white;
+}
+  

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './TaskForm.module.css';
 
 function TaskForm({ addTask }) {
   const [newTask, setNewTask] = useState(''); // Храним текст новой задачи
@@ -12,14 +13,15 @@ function TaskForm({ addTask }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}> {/* При сабмите формы вызываем handleSubmit */}
+    <form onSubmit={handleSubmit} className={styles.formContainer}> {/* При сабмите формы вызываем handleSubmit */}
       <input
         type="text"
         value={newTask} // Значение из состояния newTask
         onChange={(e) => setNewTask(e.target.value)} // Обновляем состояние при изменении
+        className={styles.inputField}
         placeholder="Add new task"
       />
-      <button type="submit">Add Task</button>
+      <button type="submit" className={styles.addButton}>Add Task</button>
     </form>
   );
 }

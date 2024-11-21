@@ -1,0 +1,73 @@
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 12px 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.taskText {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+.taskText.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.cardActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:focus {
+  outline: none;
+}
+
+button.edit {
+  background-color: #f0ad4e;
+}
+
+button.edit:hover {
+  background-color: #ec971f;
+}
+
+button.delete {
+  background-color: #d9534f;
+}
+
+button.delete:hover {
+  background-color: #c9302c;
+}

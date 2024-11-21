@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from './TaskEditor.module.css';
 
 function TaskEditor({ task, onSave, onCancel }) {
   const [newText, setNewText] = useState(task.text); 
@@ -16,16 +17,19 @@ function TaskEditor({ task, onSave, onCancel }) {
   };
 
   return (
-    <div>
+    <div className={styles.editorContainer}>
       <input
+        className={styles.editorInput}
         type="text"
         value={newText}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         autoFocus
       />
-      <button onClick={() => onSave(newText)}>Save</button>
-      <button onClick={onCancel}>Cancel</button>
+      <div className={styles.editorButtons}>
+        <button onClick={() => onSave(newText)}>Save</button>
+        <button onClick={onCancel}>Cancel</button>
+      </div>
     </div>
   );
 }

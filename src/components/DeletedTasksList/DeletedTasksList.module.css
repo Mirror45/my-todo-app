@@ -1,0 +1,53 @@
+.deletedTasksContainer {
+  background-color: #feece9;
+  border: 1px solid #f1b0a2;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.deletedTasksHeader {
+  color: #e05137;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.deletedTask {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+  word-wrap: break-word; /* Переносим длинный текст */
+  overflow-wrap: break-word; /* Современный перенос */
+  min-height: 50px;
+}
+
+.deletedTask span {
+  flex: 1; /* Текст занимает все свободное место */
+  margin-right: 10px;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Текст с многоточием, если выходит за рамки */
+  white-space: pre-wrap; /* Текст переносится, но сохраняет пробелы */
+}
+
+.restore {
+  background-color: #38c172;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.restore:hover {
+  background-color: #2f9a5d;
+}

@@ -1,16 +1,17 @@
 import React from 'react';
+import styles from './DeletedTasksList.module.css';
 
 function DeletedTasksList({ deletedTasks, onRestore }) {
   if (deletedTasks.length === 0) return null;
 
   return (
-    <div>
-      <h3>Deleted Tasks</h3>
+    <div className={styles.deletedTasksContainer}>
+      <h3 className={styles.deletedTasksHeader}>Deleted Tasks</h3>
       <ul>
         {deletedTasks.map((task) => (
-          <li key={task.id}>
-            {task.text}
-            <button onClick={() => onRestore(task)}>Restore</button>
+          <li key={task.id} className={styles.deletedTask}>
+            <span>{task.text}</span>
+            <button className={styles.restore} onClick={() => onRestore(task)}>Restore</button>
           </li>
         ))}
       </ul>
