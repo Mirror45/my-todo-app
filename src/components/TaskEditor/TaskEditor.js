@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { editTask } from '../../store/slices/tasksSlice';
 import styles from './TaskEditor.module.css';
 
-function TaskEditor({ task, onSave, onCancel }) {
-  const [newText, setNewText] = useState(task.text); 
+function TaskEditor({ taskId, initialText, onCancel }) {
+  const [newText, setNewText] = useState(initialText);
+  const dispatch = useDispatch();
 
-  const handleInputChange = (e) => {  // Обновляет состояние newText новыми данными из поля ввода.
+  const handleInputChange = (e) => {
     setNewText(e.target.value);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      onSave(newText);
+      dispatch(editTask({ id: taskId, newText }));
+      onCancel();
     } else if (e.key === 'Escape') {
       onCancel();
     }
@@ -27,7 +31,14 @@ function TaskEditor({ task, onSave, onCancel }) {
         autoFocus
       />
       <div className={styles.editorButtons}>
-        <button onClick={() => onSave(newText)}>Save</button>
+        <button
+          onClick={() => {
+            dispatch(editTask({ id: taskId, newText }));
+            onCancel();
+          }}
+        >
+          Save
+        </button>
         <button onClick={onCancel}>Cancel</button>
       </div>
     </div>

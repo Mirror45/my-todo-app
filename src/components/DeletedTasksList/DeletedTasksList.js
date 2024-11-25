@@ -1,20 +1,28 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { restoreTask } from '../../store/slices/tasksSlice';
 import styles from './DeletedTasksList.module.css';
 
-function DeletedTasksList({ deletedTasks, onRestore }) {
-  if (deletedTasks.length === 0) return null;
+function DeletedTasksList({ deletedTasks }) {
+  const dispatch = useDispatch();
+
+  const handleRestore = (taskId) => {
+    dispatch(restoreTask(taskId)); // Восстановление задачи
+  };
 
   return (
     <div className={styles.deletedTasksContainer}>
-      <h3 className={styles.deletedTasksHeader}>Deleted Tasks</h3>
-      <ul>
-        {deletedTasks.map((task) => (
-          <li key={task.id} className={styles.deletedTask}>
+      <h3>Deleted Tasks</h3>
+      {deletedTasks.length > 0 ? (
+        deletedTasks.map((task) => (
+          <div key={task.id} className={styles.deletedTask}>
             <span>{task.text}</span>
-            <button className={styles.restore} onClick={() => onRestore(task)}>Restore</button>
-          </li>
-        ))}
-      </ul>
+            <button onClick={() => handleRestore(task.id)}>Restore</button>
+          </div>
+        ))
+      ) : (
+        <p>No deleted tasks</p>
+      )}
     </div>
   );
 }

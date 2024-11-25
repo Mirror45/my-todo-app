@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTasks, setDeletedTasks, removeTask, toggleTaskCompletion, addDeletedTask, editTask } from '../../store/slices/tasksSlice';
 import Task from '../Task/Task';
 import TaskForm from '../TaskForm/TaskForm';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
@@ -6,92 +8,67 @@ import DeletedTasksList from '../DeletedTasksList/DeletedTasksList';
 import styles from './TaskList.module.css';
 
 function TaskList() {
-  const [tasks, setTasks] = useState([]);
-  const [deletedTasks, setDeletedTasks] = useState([]);
+  const dispatch = useDispatch();
+  const { tasks, deletedTasks } = useSelector((state) => state.tasks);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
   useEffect(() => {
-    // Загружаем задачи из localStorage, если они есть
     const savedTasks = JSON.parse(localStorage.getItem('tasks'));
     if (savedTasks) {
-      setTasks(savedTasks);
+      dispatch(setTasks(savedTasks)); 
     }
-  
+
     const savedDeletedTasks = JSON.parse(localStorage.getItem('deletedTasks'));
     if (savedDeletedTasks) {
-      setDeletedTasks(savedDeletedTasks);
+      dispatch(setDeletedTasks(savedDeletedTasks)); 
     }
-  }, []);
-  
+  }, [dispatch]);
+
   useEffect(() => {
-    // Сохраняем задачи в localStorage при изменении
-    if (tasks.length > 0) {
-      localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks)); 
+    localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks)); 
+  }, [tasks, deletedTasks]); 
+
+  const handleToggleTaskCompletion = useCallback((id) => {
+    dispatch(toggleTaskCompletion(id));
+  }, [dispatch]);
+
+  const handleEditTask = (id, newText) => {
+    const taskToEdit = tasks.find(task => task.id === id);
+    if (taskToEdit && taskToEdit.text) {
+      dispatch(editTask({ id, newText }));
     }
-    if (deletedTasks.length > 0) {
-      localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks));
-    }
-  }, [tasks, deletedTasks]); // Срабатывает при изменении tasks или deletedTasks
-
-  const addTask = (text) => {
-    const newTask = { id: Date.now(), text, done: false };
-    setTasks([...tasks, newTask]);
   };
 
-  const toggleTaskCompletion = (id) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, done: !task.done } : task
-      )
-    );
-  };
-
-  const editTask = (id, newText) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, text: newText } : task
-      )
-    );
-  };
-
-  const confirmDelete = (id) => {
-    const task = tasks.find((task) => task.id === id);
-    setTaskToDelete(task);
-  };
-
-  const handleDelete = () => {
-    setDeletedTasks([...deletedTasks, taskToDelete]);
-    setTasks(tasks.filter((task) => task.id !== taskToDelete.id));
-    setTaskToDelete(null);
-  };
+  const handleDeleteTask = useCallback((task) => {
+    dispatch(addDeletedTask(task)); // Добавляем задачу в удалённые
+    dispatch(removeTask(task.id)); // Удаляем задачу из активных
+    setTaskToDelete(null); // Закрываем модальное окно
+  }, [dispatch]);
 
   return (
     <div className={styles.taskListContainer}>
-      <TaskForm addTask={addTask} />
+      <TaskForm />
       <div className={styles.cardsContainer}>
         {tasks.map((task) => (
           <Task
             key={task.id}
             task={task}
-            toggleTaskCompletion={toggleTaskCompletion}
-            onDelete={() => confirmDelete(task.id)}
-            editTask={editTask}
+            toggleTaskCompletion={handleToggleTaskCompletion}
+            onDelete={setTaskToDelete} // Передаем функцию для открытия модального окна
+            editTask={handleEditTask}
           />
         ))}
-        <DeleteConfirmationModal
-          isOpen={!!taskToDelete}
-          onClose={() => setTaskToDelete(null)}
-          onConfirm={handleDelete}
-          task={taskToDelete}
-        />
+        {taskToDelete && (
+          <DeleteConfirmationModal
+            isOpen={!!taskToDelete}
+            onClose={() => setTaskToDelete(null)}
+            onConfirm={() => handleDeleteTask(taskToDelete)} // Удаление задачи
+            task={taskToDelete}
+          />
+        )}
       </div>
-      <DeletedTasksList
-          deletedTasks={deletedTasks}
-          onRestore={(task) => {
-            setTasks([...tasks, task]);
-            setDeletedTasks(deletedTasks.filter((t) => t.id !== task.id));
-          }}
-        />
+      <DeletedTasksList deletedTasks={deletedTasks} />
     </div>
   );
 }

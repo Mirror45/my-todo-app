@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../../store/slices/tasksSlice';
 import styles from './TaskForm.module.css';
 
-function TaskForm({ addTask }) {
-  const [newTask, setNewTask] = useState(''); // Храним текст новой задачи
+function TaskForm() {
+  const [taskText, setTaskText] = useState('');
+  const dispatch = useDispatch();
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Останавливаем стандартное поведение формы
-    if (newTask) { // Если поле не пустое
-      addTask(newTask); // Добавляем задачу через родительскую функцию
-      setNewTask(''); // Очищаем поле ввода
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (taskText.trim()) {
+      const newTask = { id: Date.now(), text: taskText, done: false };
+      dispatch(addTask(newTask)); // Отправляем действие в Redux
+      setTaskText(''); // Очищаем поле ввода
+    } else {
+      console.error("Task text cannot be empty!");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}> {/* При сабмите формы вызываем handleSubmit */}
+    <form onSubmit={handleSubmit} className={styles.formContainer}>
       <input
         type="text"
-        value={newTask} // Значение из состояния newTask
-        onChange={(e) => setNewTask(e.target.value)} // Обновляем состояние при изменении
+        value={taskText}
+        onChange={(e) => setTaskText(e.target.value)}
         className={styles.inputField}
         placeholder="Add new task"
       />
