@@ -6,3 +6,11 @@ export const store = configureStore({
     tasks: tasksReducer,
   },
 });
+
+// Типизация для Redux store
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+
+
+export default store;

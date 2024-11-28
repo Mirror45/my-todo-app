@@ -1,7 +1,7 @@
-// tasksSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TasksState, Task } from '../types/tasksTypes';
 
-const initialState = {
+const initialState: TasksState = {
   tasks: [],
   deletedTasks: [],
   isDeleteModalOpen: false,
@@ -12,26 +12,26 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    setTasks(state, action) {
+    setTasks(state, action: PayloadAction<Task[]>) {
       state.tasks = action.payload;
     },
-    setDeletedTasks(state, action) {
+    setDeletedTasks(state, action: PayloadAction<Task[]>) {
       state.deletedTasks = action.payload;
     },
-    addTask(state, action) {
+    addTask(state, action: PayloadAction<Task>) {
       state.tasks.push(action.payload);
     },
-    addDeletedTask(state, action) {
+    addDeletedTask(state, action: PayloadAction<Task>) {
       state.deletedTasks.push(action.payload);
     },
-    removeTask(state, action) {
+    removeTask(state, action: PayloadAction<string>) {
       state.tasks = state.tasks.filter(task => task.id !== action.payload);
     },
-    toggleTaskCompletion(state, action) {
+    toggleTaskCompletion(state, action: PayloadAction<string>) {
       const task = state.tasks.find(task => task.id === action.payload);
       if (task) task.done = !task.done;
     },
-    openDeleteModal(state, action) {
+    openDeleteModal(state, action: PayloadAction<Task>) {
       state.isDeleteModalOpen = true;
       state.taskToDelete = action.payload;
     },
@@ -39,12 +39,12 @@ const tasksSlice = createSlice({
       state.isDeleteModalOpen = false;
       state.taskToDelete = null;
     },
-    editTask(state, action) {
+    editTask(state, action: PayloadAction<{ id: string, newText: string }>) {
       const { id, newText } = action.payload;
       const task = state.tasks.find(task => task.id === id);
       if (task) task.text = newText;
     },
-    restoreTask(state, action) {
+    restoreTask(state, action: PayloadAction<string>) {
       const task = state.deletedTasks.find(task => task.id === action.payload);
       if (task) {
         state.tasks.push(task);
