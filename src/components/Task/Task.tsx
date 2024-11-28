@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { toggleTaskCompletion} from '../../store/slices/tasksSlice';
 import TaskEditor from '../TaskEditor/TaskEditor';
 import styles from './Task.module.css';
 
-function Task({ task, onDelete }) {
+interface TaskType {
+  id: string;
+  text: string;
+  done: boolean;
+}
+
+interface TaskProps {
+  task: TaskType;
+  onDelete: (task: TaskType) => void;
+  toggleTaskCompletion: (id: string) => void;
+  editTask: (id: string, newText: string) => void;
+}
+
+const Task: React.FC<TaskProps> = ({ task, onDelete, toggleTaskCompletion, editTask }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const dispatch = useDispatch();
 
   const handleEditClick = () => setIsEditing(true);
   const handleCancel = () => setIsEditing(false);
 
-  const handleToggleCompletion = () => dispatch(toggleTaskCompletion(task.id));
+  const handleToggleCompletion = () => toggleTaskCompletion(task.id);
+
+  const handleEditTask = (newText: string) => {
+    editTask(task.id, newText);  // Используем функцию editTask для обновления текста задачи
+    setIsEditing(false);
+  };
 
   return (
     <div className={styles.card}>
@@ -19,6 +34,7 @@ function Task({ task, onDelete }) {
         <TaskEditor
           taskId={task.id}
           initialText={task.text}
+          onSave={handleEditTask}  // Передаем handleEditTask через onSave
           onCancel={handleCancel}
         />
       ) : (
@@ -31,7 +47,7 @@ function Task({ task, onDelete }) {
           </span>
           <div className={styles.cardActions}>
             <button onClick={handleEditClick}>Edit</button>
-            <button onClick={() => onDelete(task)}>Delete</button> {/* Передаем задачу родителю */}
+            <button onClick={() => onDelete(task)}>Delete</button>
           </div>
         </div>
       )}

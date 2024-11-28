@@ -3,17 +3,25 @@ import { useDispatch } from 'react-redux';
 import { editTask } from '../../store/slices/tasksSlice';
 import styles from './TaskEditor.module.css';
 
-function TaskEditor({ taskId, initialText, onCancel }) {
-  const [newText, setNewText] = useState(initialText);
-  const dispatch = useDispatch();
+interface TaskEditorProps {
+  taskId: string;
+  initialText: string;
+  onSave: (newText: string) => void;
+  onCancel: () => void;
+}
 
-  const handleInputChange = (e) => {
+const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, initialText, onSave, onCancel }) => {
+  const dispatch = useDispatch();
+  const [newText, setNewText] = useState(initialText);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewText(e.target.value);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      dispatch(editTask({ id: taskId, newText }));
+      onSave(newText);
+      dispatch(editTask({ id: taskId, newText })); // Делаем dispatch через useDispatch
       onCancel();
     } else if (e.key === 'Escape') {
       onCancel();
@@ -33,7 +41,8 @@ function TaskEditor({ taskId, initialText, onCancel }) {
       <div className={styles.editorButtons}>
         <button
           onClick={() => {
-            dispatch(editTask({ id: taskId, newText }));
+            onSave(newText);
+            dispatch(editTask({ id: taskId, newText })); // Делаем dispatch при сохранении
             onCancel();
           }}
         >
@@ -43,6 +52,6 @@ function TaskEditor({ taskId, initialText, onCancel }) {
       </div>
     </div>
   );
-}
+};
 
 export default TaskEditor;
