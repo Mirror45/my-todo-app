@@ -3,10 +3,20 @@ import { useDispatch } from 'react-redux';
 import { restoreTask } from '../../store/slices/tasksSlice';
 import styles from './DeletedTasksList.module.css';
 
-function DeletedTasksList({ deletedTasks }) {
+// Тип задачи
+interface TaskType {
+  id: string;
+  text: string;
+}
+
+interface DeletedTasksListProps {
+  deletedTasks: TaskType[];
+}
+
+const DeletedTasksList: React.FC<DeletedTasksListProps> = ({ deletedTasks }) => {
   const dispatch = useDispatch();
 
-  const handleRestore = (taskId) => {
+  const handleRestore = (taskId: string) => {
     dispatch(restoreTask(taskId)); // Восстановление задачи
   };
 
@@ -25,6 +35,6 @@ function DeletedTasksList({ deletedTasks }) {
       )}
     </div>
   );
-}
+};
 
 export default DeletedTasksList;
