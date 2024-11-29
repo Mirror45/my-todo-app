@@ -1,7 +1,17 @@
 import React from 'react';
 import styles from './DeleteConfirmationModal.module.css';
 
-function DeleteConfirmationModal({ isOpen, onClose, onConfirm, task }) {
+interface DeleteConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  task: {
+    id: string;
+    text: string;
+  };
+}
+
+const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpen, onClose, onConfirm, task }) => {
   if (!isOpen) return null;
 
   return (
@@ -16,6 +26,6 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, task }) {
       </div>
     </div>
   );
-}
+};
 
 export default DeleteConfirmationModal;
