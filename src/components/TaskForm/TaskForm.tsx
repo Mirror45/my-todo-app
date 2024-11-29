@@ -3,18 +3,25 @@ import { useDispatch } from 'react-redux';
 import { addTask } from '../../store/slices/tasksSlice';
 import styles from './TaskForm.module.css';
 
-function TaskForm() {
-  const [taskText, setTaskText] = useState('');
+// Тип для новой задачи
+interface TaskType {
+  id: string;
+  text: string;
+  done: boolean;
+}
+
+const TaskForm: React.FC = () => {
+  const [taskText, setTaskText] = useState<string>('');
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (taskText.trim()) {
-      const newTask = { id: Date.now(), text: taskText, done: false };
+      const newTask: TaskType = { id: Date.now().toString(), text: taskText, done: false };
       dispatch(addTask(newTask)); // Отправляем действие в Redux
       setTaskText(''); // Очищаем поле ввода
     } else {
-      console.error("Task text cannot be empty!");
+      console.error('Task text cannot be empty!');
     }
   };
 
@@ -27,9 +34,11 @@ function TaskForm() {
         className={styles.inputField}
         placeholder="Add new task"
       />
-      <button type="submit" className={styles.addButton}>Add Task</button>
+      <button type="submit" className={styles.addButton}>
+        Add Task
+      </button>
     </form>
   );
-}
+};
 
 export default TaskForm;
