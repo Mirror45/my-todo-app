@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTasks, setDeletedTasks, removeTask, toggleTaskCompletion, addDeletedTask, editTask } from '../../store/slices/tasksSlice';
+import { setTasks, removeTask, toggleTaskCompletion, editTask } from '../../store/slices/tasksSlice';
 import Task from '../Task/Task';
 import TaskForm from '../TaskForm/TaskForm';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
-import DeletedTasksList from '../DeletedTasksList/DeletedTasksList';
 import styles from './TaskList.module.css';
 
 // Тип задачи
@@ -16,7 +15,7 @@ interface TaskType {
 
 const TaskList: React.FC = () => {
   const dispatch = useDispatch();
-  const { tasks, deletedTasks } = useSelector((state: any) => state.tasks);
+  const { tasks } = useSelector((state: any) => state.tasks);
   const [taskToDelete, setTaskToDelete] = useState<TaskType | null>(null);
 
   useEffect(() => {
@@ -24,17 +23,11 @@ const TaskList: React.FC = () => {
     if (savedTasks) {
       dispatch(setTasks(savedTasks)); 
     }
-
-    const savedDeletedTasks = JSON.parse(localStorage.getItem('deletedTasks') || '[]');
-    if (savedDeletedTasks) {
-      dispatch(setDeletedTasks(savedDeletedTasks)); 
-    }
   }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks)); 
-    localStorage.setItem('deletedTasks', JSON.stringify(deletedTasks)); 
-  }, [tasks, deletedTasks]); 
+  }, [tasks]); 
 
   const handleToggleTaskCompletion = useCallback((id: string) => {
     dispatch(toggleTaskCompletion(id));
@@ -48,7 +41,6 @@ const TaskList: React.FC = () => {
   };
 
   const handleDeleteTask = useCallback((task: TaskType) => {
-    dispatch(addDeletedTask(task)); // Добавляем задачу в удалённые
     dispatch(removeTask(task.id)); // Удаляем задачу из активных
     setTaskToDelete(null); // Закрываем модальное окно
   }, [dispatch]);
@@ -75,7 +67,6 @@ const TaskList: React.FC = () => {
           />
         )}
       </div>
-      <DeletedTasksList deletedTasks={deletedTasks} />
     </div>
   );
 };

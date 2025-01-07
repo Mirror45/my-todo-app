@@ -3,7 +3,6 @@ import { TasksState, Task } from '../types/tasksTypes';
 
 const initialState: TasksState = {
   tasks: [],
-  deletedTasks: [],
   isDeleteModalOpen: false,
   taskToDelete: null,
 };
@@ -15,14 +14,8 @@ const tasksSlice = createSlice({
     setTasks(state, action: PayloadAction<Task[]>) {
       state.tasks = action.payload;
     },
-    setDeletedTasks(state, action: PayloadAction<Task[]>) {
-      state.deletedTasks = action.payload;
-    },
     addTask(state, action: PayloadAction<Task>) {
       state.tasks.push(action.payload);
-    },
-    addDeletedTask(state, action: PayloadAction<Task>) {
-      state.deletedTasks.push(action.payload);
     },
     removeTask(state, action: PayloadAction<string>) {
       state.tasks = state.tasks.filter(task => task.id !== action.payload);
@@ -44,27 +37,17 @@ const tasksSlice = createSlice({
       const task = state.tasks.find(task => task.id === id);
       if (task) task.text = newText;
     },
-    restoreTask(state, action: PayloadAction<string>) {
-      const task = state.deletedTasks.find(task => task.id === action.payload);
-      if (task) {
-        state.tasks.push(task);
-        state.deletedTasks = state.deletedTasks.filter(task => task.id !== action.payload);
-      }
-    },
   },
 });
 
 export const {
   setTasks,
-  setDeletedTasks,
   addTask,
-  addDeletedTask,
   removeTask,
   toggleTaskCompletion,
   openDeleteModal,
   closeDeleteModal,
   editTask,
-  restoreTask,
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

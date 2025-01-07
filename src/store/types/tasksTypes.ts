@@ -6,7 +6,6 @@ export interface Task {
   
 export interface TasksState {
     tasks: Task[];
-    deletedTasks: Task[];
     isDeleteModalOpen: boolean;
     taskToDelete: Task | null;
 }
