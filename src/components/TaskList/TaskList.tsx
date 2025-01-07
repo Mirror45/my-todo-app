@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTasks, removeTask, toggleTaskCompletion, editTask } from '../../store/slices/tasksSlice';
 import Task from '../Task/Task';
@@ -29,9 +29,9 @@ const TaskList: React.FC = () => {
     localStorage.setItem('tasks', JSON.stringify(tasks)); 
   }, [tasks]); 
 
-  const handleToggleTaskCompletion = useCallback((id: string) => {
+  const handleToggleTaskCompletion = (id: string) => {
     dispatch(toggleTaskCompletion(id));
-  }, [dispatch]);
+  };
 
   const handleEditTask = (id: string, newText: string) => {
     const taskToEdit = tasks.find((task: TaskType) => task.id === id);
@@ -40,10 +40,10 @@ const TaskList: React.FC = () => {
     }
   };
 
-  const handleDeleteTask = useCallback((task: TaskType) => {
+  const handleDeleteTask = (task: TaskType) => {
     dispatch(removeTask(task.id)); // Удаляем задачу из активных
     setTaskToDelete(null); // Закрываем модальное окно
-  }, [dispatch]);
+  };
 
   return (
     <div className={styles.taskListContainer}>
