@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import TaskEditor from '../TaskEditor/TaskEditor';
+import { TaskProps } from '../../types/task-props';
 import styles from './Task.module.css';
 
-interface TaskType {
-  id: string;
-  text: string;
-  done: boolean;
-}
-
-interface TaskProps {
-  task: TaskType;
-  onDelete: (task: TaskType) => void;
-  toggleTaskCompletion: (id: string) => void;
-  editTask: (id: string, newText: string) => void;
-}
 
 const Task: React.FC<TaskProps> = ({ task, onDelete, toggleTaskCompletion, editTask }) => {
   const [isEditing, setIsEditing] = useState(false);

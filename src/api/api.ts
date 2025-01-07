@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { Task } from '../store/types/tasksTypes'; // Предполагается, что тип Task уже описан
+import { TaskType } from '../types/task-types';
 
-const API_URL = 'http://localhost:3000/tasks'; // Укажи свой адрес
+const API_URL = 'http://localhost:3000/tasks';
 
 // Получение списка задач
-export const getTasks = async (): Promise<Task[]> => {
+export const getTasks = async (): Promise<TaskType[]> => {
   try {
-    const response = await axios.get<Task[]>(API_URL);
+    const response = await axios.get<TaskType[]>(API_URL);
     return response.data;
   } catch (error) {
     console.error("Error fetching tasks:", error);
@@ -15,9 +15,9 @@ export const getTasks = async (): Promise<Task[]> => {
 };
 
 // Создание новой задачи
-export const createTask = async (task: Omit<Task, 'id'>): Promise<Task> => {
+export const createTask = async (task: Omit<TaskType, 'id'>): Promise<TaskType> => {
   try {
-    const response = await axios.post<Task>(API_URL, task);
+    const response = await axios.post<TaskType>(API_URL, task);
     return response.data;
   } catch (error) {
     console.error("Error creating task:", error);
@@ -26,9 +26,9 @@ export const createTask = async (task: Omit<Task, 'id'>): Promise<Task> => {
 };
 
 // Обновление существующей задачи
-export const updateTask = async (id: string, updatedTask: Partial<Task>): Promise<Task> => {
+export const updateTask = async (id: string, updatedTask: Partial<TaskType>): Promise<TaskType> => {
   try {
-    const response = await axios.put<Task>(`${API_URL}/${id}`, updatedTask);
+    const response = await axios.put<TaskType>(`${API_URL}/${id}`, updatedTask);
     return response.data;
   } catch (error) {
     console.error("Error updating task:", error);

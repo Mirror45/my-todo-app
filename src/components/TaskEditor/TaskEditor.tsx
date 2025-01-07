@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { editTask } from '../../store/slices/tasksSlice';
+import { TaskEditorProps } from '../../types/task-editor-props';
 import styles from './TaskEditor.module.css';
 
-interface TaskEditorProps {
-  taskId: string;
-  initialText: string;
-  onSave: (newText: string) => void;
-  onCancel: () => void;
-}
 
 const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, initialText, onSave, onCancel }) => {
   const dispatch = useDispatch();

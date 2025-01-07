@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TasksState, Task } from '../types/tasksTypes';
+import { TasksState, TaskType } from '../../types/task-types';
+
 
 const initialState: TasksState = {
   tasks: [],
@@ -11,10 +12,10 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    setTasks(state, action: PayloadAction<Task[]>) {
+    setTasks(state, action: PayloadAction<TaskType[]>) {
       state.tasks = action.payload;
     },
-    addTask(state, action: PayloadAction<Task>) {
+    addTask(state, action: PayloadAction<TaskType>) {
       state.tasks.push(action.payload);
     },
     removeTask(state, action: PayloadAction<string>) {
@@ -24,7 +25,7 @@ const tasksSlice = createSlice({
       const task = state.tasks.find(task => task.id === action.payload);
       if (task) task.done = !task.done;
     },
-    openDeleteModal(state, action: PayloadAction<Task>) {
+    openDeleteModal(state, action: PayloadAction<TaskType>) {
       state.isDeleteModalOpen = true;
       state.taskToDelete = action.payload;
     },

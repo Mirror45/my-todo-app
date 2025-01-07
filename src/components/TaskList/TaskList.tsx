@@ -4,14 +4,9 @@ import { setTasks, removeTask, toggleTaskCompletion, editTask } from '../../stor
 import Task from '../Task/Task';
 import TaskForm from '../TaskForm/TaskForm';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
+import { TaskType } from '../../types/task-types';
 import styles from './TaskList.module.css';
 
-// Тип задачи
-interface TaskType {
-  id: string;
-  text: string;
-  done: boolean;
-}
 
 const TaskList: React.FC = () => {
   const dispatch = useDispatch();

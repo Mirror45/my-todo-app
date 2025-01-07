@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addTask } from '../../store/slices/tasksSlice';
+import { TaskType } from '../../types/task-types';
 import styles from './TaskForm.module.css';
 
-// Тип для новой задачи
-interface TaskType {
-  id: string;
-  text: string;
-  done: boolean;
-}
 
 const TaskForm: React.FC = () => {
   const [taskText, setTaskText] = useState<string>('');
