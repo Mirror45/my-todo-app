@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTasks, removeTask, toggleTaskCompletion, editTask } from '../../store/slices/tasksSlice';
+import { removeTask, toggleTaskCompletion, editTask } from '../../store/slices/tasksSlice';
 import Task from '../Task/Task';
 import TaskForm from '../TaskForm/TaskForm';
 import DeleteConfirmationModal from '../DeleteConfirmationModal/DeleteConfirmationModal';
@@ -12,17 +12,6 @@ const TaskList: React.FC = () => {
   const dispatch = useDispatch();
   const { tasks } = useSelector((state: any) => state.tasks);
   const [taskToDelete, setTaskToDelete] = useState<TaskType | null>(null);
-
-  useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-    if (savedTasks) {
-      dispatch(setTasks(savedTasks)); 
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks)); 
-  }, [tasks]); 
 
   const handleToggleTaskCompletion = (id: string) => {
     dispatch(toggleTaskCompletion(id));
