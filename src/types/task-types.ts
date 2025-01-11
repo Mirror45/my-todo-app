@@ -6,6 +6,8 @@ export interface TaskType {
   
 export interface TasksState {
   tasks: TaskType[];
-  isDeleteModalOpen: boolean;
-  taskToDelete: TaskType | null;
+  modal: {
+    isOpen: boolean;
+    task: TaskType | null;
+  };
 }

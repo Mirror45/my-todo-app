@@ -1,42 +1,53 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TasksState, TaskType } from '../../types/task-types';
 
-
 const initialState: TasksState = {
   tasks: [],
-  isDeleteModalOpen: false,
-  taskToDelete: null,
+  modal: {
+    isOpen: false,
+    task: null, // Храним задачу для модального окна, если нужно
+  },
 };
 
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
+    // Устанавливаем список задач
     setTasks(state, action: PayloadAction<TaskType[]>) {
       state.tasks = action.payload;
     },
+
+    // Добавляем новую задачу
     addTask(state, action: PayloadAction<TaskType>) {
       state.tasks.push(action.payload);
     },
+
+    // Удаляем задачу по id
     removeTask(state, action: PayloadAction<string>) {
       state.tasks = state.tasks.filter(task => task.id !== action.payload);
     },
+
+    // Переключаем состояние выполнения задачи
     toggleTaskCompletion(state, action: PayloadAction<string>) {
       const task = state.tasks.find(task => task.id === action.payload);
-      if (task) task.done = !task.done;
+      if (task) {
+        task.done = !task.done;
+      }
     },
-    openDeleteModal(state, action: PayloadAction<TaskType>) {
-      state.isDeleteModalOpen = true;
-      state.taskToDelete = action.payload;
+
+    // Открываем модальное окно с задачей
+    setModal(state, action: PayloadAction<{ isOpen: boolean; task: TaskType | null }>) {
+      state.modal.isOpen = action.payload.isOpen;
+      state.modal.task = action.payload.task;
     },
-    closeDeleteModal(state) {
-      state.isDeleteModalOpen = false;
-      state.taskToDelete = null;
-    },
-    editTask(state, action: PayloadAction<{ id: string, newText: string }>) {
-      const { id, newText } = action.payload;
-      const task = state.tasks.find(task => task.id === id);
-      if (task) task.text = newText;
+
+    // Редактируем задачу по id
+    editTask(state, action: PayloadAction<{ id: string; newText: string }>) {
+      const task = state.tasks.find(task => task.id === action.payload.id);
+      if (task) {
+        task.text = action.payload.newText;
+      }
     },
   },
 });
@@ -46,8 +57,7 @@ export const {
   addTask,
   removeTask,
   toggleTaskCompletion,
-  openDeleteModal,
-  closeDeleteModal,
+  setModal,
   editTask,
 } = tasksSlice.actions;
 

@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import { editTask } from '../../store/slices/tasksSlice';
 import { TaskEditorProps } from '../../types/task-editor-props';
 import styles from './TaskEditor.module.css';
 
-
-const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, initialText, onSave, onCancel }) => {
+const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, onSave, onCancel }) => {
   const dispatch = useDispatch();
-  const [newText, setNewText] = useState(initialText);
+
+  // Получаем начальное значение для редактируемой задачи из Redux
+  const task = useSelector((state: RootState) =>
+    state.tasks.tasks.find((task) => task.id === taskId)
+  );
+
+  const [newText, setNewText] = useState(task ? task.text : '');
+
+  // Обновляем текст при изменении задачи в Redux
+  useEffect(() => {
+    if (task) {
+      setNewText(task.text);
+    }
+  }, [task]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewText(e.target.value);
@@ -15,11 +28,21 @@ const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, initialText, onSave, on
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      onSave(newText);
-      dispatch(editTask({ id: taskId, newText })); // Делаем dispatch через useDispatch
-      onCancel();
+      handleSave();
     } else if (e.key === 'Escape') {
       onCancel();
+    }
+  };
+
+  const handleSave = () => {
+    if (!newText.trim()) {
+      alert('Text cannot be empty');
+      return;
+    }
+
+    if (task) {
+      dispatch(editTask({ id: task.id, newText })); // Делаем dispatch через Redux
+      onSave(newText); // Вызываем onSave, передавая новый текст
     }
   };
 
@@ -34,16 +57,8 @@ const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, initialText, onSave, on
         autoFocus
       />
       <div className={styles.editorButtons}>
-        <button
-          onClick={() => {
-            onSave(newText);
-            dispatch(editTask({ id: taskId, newText })); // Делаем dispatch при сохранении
-            onCancel();
-          }}
-        >
-          Save
-        </button>
-        <button onClick={onCancel}>Cancel</button>
+        <button type="submit" onClick={handleSave} aria-label="Save task">Save</button>
+        <button type="button" onClick={onCancel} aria-label="Cancel">Cancel</button>
       </div>
     </div>
   );
