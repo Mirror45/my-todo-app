@@ -29,8 +29,8 @@ const DeleteConfirmationModal: React.FC = () => {
         <h3>Are you sure you want to delete this task?</h3>
         <p>{task.text}</p>
         <div className={styles.modalButtons}>
-          <button className={styles.confirm} onClick={handleConfirm}>Yes</button>
-          <button className={styles.cancel} onClick={handleClose}>No</button>
+          <button className={styles.confirm} onClick={handleConfirm} aria-label="Confirm">Yes</button>
+          <button className={styles.cancel} onClick={handleClose} aria-label="Cancel">No</button>
         </div>
       </div>
     </div>
