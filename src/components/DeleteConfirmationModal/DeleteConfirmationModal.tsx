@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setModal, removeTask } from '../../store/slices/tasksSlice';
-import { RootState } from '../../store/store';
+import { setModal, deleteTaskById } from '../../store/slices/tasksSlice'; // Обновлено на правильное действие
+import { AppDispatch, RootState } from '../../store/store';
 import styles from './DeleteConfirmationModal.module.css';
 
 const DeleteConfirmationModal: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { isOpen, task } = useSelector((state: RootState) => state.tasks.modal); // Получаем состояние модального окна и задачу из Redux
 
   // Закрытие модального окна
@@ -16,7 +16,7 @@ const DeleteConfirmationModal: React.FC = () => {
   // Подтверждение удаления задачи
   const handleConfirm = () => {
     if (task) {
-      dispatch(removeTask(task.id)); // Удаляем задачу через Redux
+      dispatch(deleteTaskById(task._id)); // Удаляем задачу через Redux
       handleClose(); // Закрываем модальное окно
     }
   };

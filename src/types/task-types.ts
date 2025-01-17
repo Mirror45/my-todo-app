@@ -1,5 +1,5 @@
 export interface TaskType {
-  id: string;
+  _id: string;
   text: string;
   done: boolean;
 }
@@ -10,4 +10,5 @@ export interface TasksState {
     isOpen: boolean;
     task: TaskType | null;
   };
+  loading: boolean;
 }

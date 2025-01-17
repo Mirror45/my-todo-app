@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editTask, setModal, toggleTaskCompletion } from '../../store/slices/tasksSlice';
+import { setModal, updateTaskById } from '../../store/slices/tasksSlice';
+import { AppDispatch } from '../../store/store';
 import TaskEditor from '../TaskEditor/TaskEditor';
 import { TaskProps } from '../../types/task-props';
 import styles from './Task.module.css';
 
 const Task: React.FC<TaskProps> = ({ task }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [isEditing, setIsEditing] = useState(false);
 
   const handleToggleCompletion = () => {
-    dispatch(toggleTaskCompletion(task.id)); // Переключаем состояние выполнения задачи через Redux
+    // Переключаем состояние выполнения задачи
+    dispatch(updateTaskById({
+      id: task._id,
+      updatedTask: { done: !task.done }
+    }));
   };
 
   const handleEditClick = () => {
@@ -22,7 +27,10 @@ const Task: React.FC<TaskProps> = ({ task }) => {
   };
 
   const handleEditTask = (newText: string) => {
-    dispatch(editTask({ id: task.id, newText })); // Редактируем задачу через Redux
+    dispatch(updateTaskById({
+      id: task._id,
+      updatedTask: { text: newText }
+    })); // Редактируем задачу через Redux
     setIsEditing(false); // Выключаем режим редактирования
   };
 
@@ -34,7 +42,7 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     <div className={styles.card}>
       {isEditing ? (
         <TaskEditor
-          taskId = {task.id}
+          taskId={task._id}
           onSave={handleEditTask}  // передаем функцию сохранения
           onCancel={handleCancel}   // передаем функцию отмены
         />
