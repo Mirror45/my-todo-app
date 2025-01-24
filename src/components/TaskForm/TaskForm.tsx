@@ -10,12 +10,11 @@ const TaskForm: React.FC = () => {
   const loading = useSelector((state: RootState) => state.tasks.loading); // Состояние загрузки из Redux
 
   // Обработчик отправки формы
-  const handleSubmit = () => {
-    // e.preventDefault();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (taskText.trim()) { // Проверяем, что текст задачи не пустой
       const newTask = { text: taskText, description: '', done: false }; // Создаем новую задачу
       dispatch(addNewTask(newTask)) // Диспатчим экшен для добавления задачи в Redux
-        .unwrap() // Используем unwrap, чтобы дождаться выполнения асинхронной операции
         .then(() => {
           setTaskText(''); // Очищаем поле ввода после успешного добавления задачи
         })

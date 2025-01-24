@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { fetchTasks, updateTaskById } from '../../store/slices/tasksSlice'; // Для обновления задачи
+import { updateTaskById } from '../../store/slices/tasksSlice'; // Для обновления задачи
 import { TaskEditorProps } from '../../types/task-editor-props';
 import styles from './TaskEditor.module.css';
 
@@ -29,8 +29,10 @@ const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, onSave, onCancel }) => 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault(); // Предотвращаем любое стандартное поведение Enter
       handleSave();
     } else if (e.key === 'Escape') {
+      e.preventDefault(); // Предотвращаем стандартное поведение Escape
       onCancel();
     }
   };
@@ -45,9 +47,7 @@ const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, onSave, onCancel }) => 
       try {
         setLoading(true); // Начинаем загрузку
         // Делаем запрос на обновление задачи
-        await dispatch(updateTaskById({ id: task._id, updatedTask: { text: newText } })).unwrap();
-        // Перезагружаем задачи, чтобы обновить данные после сохранения
-        await dispatch(fetchTasks()).unwrap(); // Загружаем актуальные данные
+        await dispatch(updateTaskById({ id: task._id, updatedTask: { text: newText } }));
         onSave(newText); // Вызываем onSave, передавая новый текст
       } catch (error) {
         console.error('Failed to update task:', error);
