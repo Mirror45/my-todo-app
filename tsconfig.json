@@ -1,30 +1,28 @@
 {
   "compilerOptions": {
-    "target": "es5",                            // Совместимость с более старыми браузерами
-    "lib": ["dom", "dom.iterable", "esnext"],    // Подключаем последние возможности JavaScript
-    "allowJs": true,                             // Разрешает использование файлов JavaScript в проекте
-    "skipLibCheck": true,                        // Пропускает проверку типов в библиотеках для ускорения компиляции
-    "esModuleInterop": true,                     // Разрешает использование CommonJS и ES6 модулей
-    "allowSyntheticDefaultImports": true,        // Разрешает импорт по умолчанию из CommonJS-модулей
-    "strict": true,                              // Включает строгую проверку типов (рекомендуется для TypeScript)
-    "forceConsistentCasingInFileNames": true,    // Обеспечивает консистентность в именах файлов
-    "module": "esnext",                          // Использует новый стандарт модулей
-    "moduleResolution": "node",                  // Указывает на метод разрешения модулей, используемый Node.js
-    "resolveJsonModule": true,                   // Позволяет импортировать JSON файлы
-    "jsx": "react-jsx",                          // Используется для JSX в React 17+
-    "noImplicitAny": true,                       // Требует явное указание типа `any`
-    "strictNullChecks": true,                    // Включает проверку на `null` и `undefined`
-    "noImplicitThis": true,                      // Запрещает использование `this` с неявным типом
-    "alwaysStrict": true,                        // Включает строгий режим везде
-    "downlevelIteration": true,                  // Поддержка старых браузеров для итераторов
-    "isolatedModules": true,                     // Обеспечивает, что каждый файл компилируется как независимый модуль
-    "noUnusedLocals": true,                      // Предупреждает об неиспользуемых локальных переменных
-    "noUnusedParameters": true                   // Предупреждает о неиспользуемых параметрах
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "types": ["jest", "@testing-library/jest-dom"], 
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "downlevelIteration": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
