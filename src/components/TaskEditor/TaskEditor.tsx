@@ -13,12 +13,12 @@ const TaskEditor: React.FC<TaskEditorProps> = ({ taskId, onSave, onCancel }) => 
     state.tasks.tasks.find((task) => task._id === taskId)
   );
 
-  const [newText, setNewText] = useState(task ? task.text : ''); // Состояние для редактируемого текста
+  const [newText, setNewText] = useState(task?.text ?? ''); // Состояние для редактируемого текста
   const [loading, setLoading] = useState(false); // Состояние для отслеживания загрузки
 
   // Обновляем текст при изменении задачи в Redux
   useEffect(() => {
-    if (task) {
+    if (task?.text !== undefined) {
       setNewText(task.text);
     }
   }, [task]);
